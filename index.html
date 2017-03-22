@@ -2,7 +2,7 @@
 <html lang="en"> 
 <head> 
   <meta charset="UTF-8" />
-    <title>Phaser - Making your first game, part 7</title>
+    <title>Basket Fight</title>
   <script type="text/javascript" src="js/phaser.min.js"></script>
     <style type="text/css">
         body {
@@ -21,12 +21,14 @@ function preload() {
     game.load.image('sky', 'assets/sky2.png');
     game.load.image('ground', 'assets/platform.png');
     game.load.spritesheet('dude', 'assets/bill.png', 32, 48);
+    game.load.spritesheet('ball', 'assets/ball.png', 32, 32);
 
 }
 
 var player;
 var platforms;
 var cursors;
+var ball;
 
 function create() {
 
@@ -38,12 +40,16 @@ function create() {
 
     //  The platforms group contains the ground and the 2 ledges we can jump on
     platforms = game.add.group();
+    base = game.add.group();
+    items = game.add.group();
 
     //  We will enable physics for any object that is created in this group
     platforms.enableBody = true;
+    base.enableBody = true;
+    items.enableBody = true;
 
     // Here we create the ground.
-    var ground = platforms.create(0, game.world.height - 64, 'ground');
+    var ground = base.create(0, game.world.height - 64, 'ground');
 
     //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
     ground.scale.setTo(2, 2);
@@ -51,12 +57,29 @@ function create() {
     //  This stops it from falling away when you jump on it
     ground.body.immovable = true;
 
-    //  Now let's create two ledges
-    var ledge = platforms.create(400, 400, 'ground');
-    ledge.body.immovable = true;
+    ball = items.create(200, 200, 'ball');
+    game.physics.arcade.enable(ball);
+    ball.body.bounce.y = 1;
+    ball.body.gravity.y = 300;
+    ball.body.collideWorldBounds = true;
 
-    ledge = platforms.create(-150, 250, 'ground');
+    //  Now let's create two ledges
+    var ledge = platforms.create(700, 200, 'ground');
     ledge.body.immovable = true;
+    ledge.scale.setTo(0.05,19);
+
+    ledge = platforms.create(50, 200, 'ground');
+    ledge.body.immovable = true;
+    ledge.scale.setTo(0.05,19);
+
+    var rim = platforms.create(660, 250, 'ground');
+    rim.body.immovable = true;
+    rim.scale.setTo(0.1,0.10);
+
+    rim = platforms.create(70, 250, 'ground');
+    rim.body.immovable = true;
+    rim.scale.setTo(0.1,0.10);
+
 
     // The player and its settings
     player = game.add.sprite(32, game.world.height - 150, 'dude');
@@ -80,7 +103,9 @@ function create() {
 function update() {
 
     //  Collide the player and the stars with the platforms
-    game.physics.arcade.collide(player, platforms);
+    game.physics.arcade.collide(player, base);
+    game.physics.arcade.collide(player, ball);
+    game.physics.arcade.collide(base, ball);
 
     //  Reset the players velocity (movement)
     player.body.velocity.x = 0;
@@ -88,14 +113,14 @@ function update() {
     if (cursors.left.isDown)
     {
         //  Move to the left
-        player.body.velocity.x = -150;
+        player.body.velocity.x = -666;
 
         player.animations.play('left');
     }
     else if (cursors.right.isDown)
     {
         //  Move to the right
-        player.body.velocity.x = 150;
+        player.body.velocity.x = 666;
 
         player.animations.play('right');
     }
@@ -110,7 +135,7 @@ function update() {
     //  Allow the player to jump if they are touching the ground.
     if (cursors.up.isDown && player.body.touching.down)
     {
-        player.body.velocity.y = -350;
+        player.body.velocity.y = -390;
     }
 
 }
