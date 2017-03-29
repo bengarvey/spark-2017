@@ -48,9 +48,6 @@ function create() {
     game.input.gamepad.start();
 
     // To listen to buttons from a specific pad listen directly on that pad game.input.gamepad.padX, where X = pad 1-4
-    pad1 = game.input.gamepad.pad1;
-    console.log(pad1);
-    game.input.onDown.add(dump, this);
 
     //  The platforms group contains the ground and the 2 ledges we can jump on
     platforms = game.add.group();
@@ -76,7 +73,8 @@ function create() {
     ball.body.bounce.y = 1;
     ball.body.gravity.y = 300;
     ball.body.collideWorldBounds = true;
-
+    ball.body.worldBounce = true;
+    ball.body.bounce.set(1);
     //  Now let's create two ledges
     var ledge = platforms.create(700, 200, 'ground');
     ledge.body.immovable = true;
@@ -114,10 +112,6 @@ function create() {
     cursors = game.input.keyboard.createCursorKeys();
 }
 
-function dump() {
-  console.log(pad1._axes[0]);
-  console.log(pad1._rawPad.axes[0]);
-}
 
 function update() {
 
@@ -129,14 +123,16 @@ function update() {
     //  Reset the players velocity (movement)
     player.body.velocity.x = 0;
 
-    if (navigator.getGamepads()[0].buttons[13].pressed || cursors.left.isDown)
+    padConnected = navigator.getGamepads()[0] != null;
+
+    if ((padConnected && navigator.getGamepads()[0].buttons[13].pressed) || cursors.left.isDown)
     {
         //  Move to the left
         player.body.velocity.x = -666;
 
         player.animations.play('left');
     }
-    else if (navigator.getGamepads()[0].buttons[14].pressed || cursors.right.isDown)
+    else if ((padConnected && navigator.getGamepads()[0].buttons[14].pressed) || cursors.right.isDown)
     {
         //  Move to the right
         player.body.velocity.x = 666;
@@ -152,7 +148,7 @@ function update() {
     }
 
     //  Allow the player to jump if they are touching the ground.
-    if (navigator.getGamepads()[0].buttons[0].pressed || cursors.up.isDown && player.body.touching.down)
+    if ((padConnected && navigator.getGamepads()[0].buttons[0].pressed) || cursors.up.isDown && player.body.touching.down)
     {
         player.body.velocity.y = -390;
     }
