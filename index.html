@@ -21,6 +21,8 @@ function preload() {
     game.load.image('sky', 'assets/green_court.png');
     game.load.image('ground', 'assets/platform.png');
     game.load.spritesheet('dude', 'assets/bill.png', 32, 48);
+    game.load.spritesheet('tc', 'assets/tc.png', 26, 50);
+    game.load.spritesheet('kj', 'assets/kj.png', 18, 50);
     game.load.spritesheet('ball', 'assets/ball.png', 32, 32);
 
 }
@@ -109,8 +111,8 @@ function create() {
     rim2.scale.setTo(0.1,0.10);
 
     // The player1 and its settings
-    player1 = game.add.sprite(32, game.world.height - 150, 'dude');
-    player2 = game.add.sprite(32, game.world.height - 150, 'dude');
+    player1 = game.add.sprite(32, game.world.height - 150,'tc');
+    player2 = game.add.sprite(32, game.world.height - 150, 'kj');
 
     //  We need to enable physics on the player2
     game.physics.arcade.enable(player1);
@@ -203,14 +205,19 @@ function update() {
     }
 
     //  Allow the player1 to jump if they are touching the ground.
-    if ((padConnected && navigator.getGamepads()[0].buttons[0].pressed) || cursors.up.isDown && player1.body.touching.down)
+    if ((padConnected && navigator.getGamepads()[0].buttons[0].pressed && player.body.touching.down) || cursors.up.isDown && player1.body.touching.down)
     {
-        player1.body.velocity.y = -390;
+        player1.body.velocity.y = -375;
     }
 
     if (this.upKey.isDown && player2.body.touching.down)
     {
-        player2.body.velocity.y = -390;
+        player2.body.velocity.y = -375;
+    }
+
+    if ((padConnected && navigator.getGamepads()[0].buttons[12].pressed )|| (cursors.down.isDown ))
+    {
+        player1.body.velocity.y = 425
     }
 
     score1Text.text = score1;
