@@ -148,9 +148,14 @@ function update() {
     }
 
     //  Allow the player to jump if they are touching the ground.
-    if ((padConnected && navigator.getGamepads()[0].buttons[0].pressed) || cursors.up.isDown && player.body.touching.down)
+    if ((padConnected && navigator.getGamepads()[0].buttons[0].pressed && player.body.touching.down )|| (cursors.up.isDown && player.body.touching.down))
     {
-        player.body.velocity.y = -390;
+        player.body.velocity.y = -375
+    }
+
+     if ((padConnected && navigator.getGamepads()[0].buttons[12].pressed )|| (cursors.down.isDown ))
+    {
+        player.body.velocity.y = 425
     }
 
 }
