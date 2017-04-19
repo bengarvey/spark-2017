@@ -24,7 +24,7 @@ function preload() {
     game.load.spritesheet('tc', 'assets/tc.png', 26, 50);
     game.load.spritesheet('kj', 'assets/kj.png', 18, 50);
     game.load.spritesheet('ball', 'assets/ball.png', 32, 32);
-
+    game.load.audio('redmusic', ['assets/redcourt.mp3']);
 }
 
 var player1;
@@ -112,7 +112,7 @@ function create() {
 
     // The player1 and its settings
     player1 = game.add.sprite(32, game.world.height - 150,'tc');
-    player2 = game.add.sprite(32, game.world.height - 150, 'kj');
+    player2 = game.add.sprite(700, game.world.height - 150, 'kj');
 
     //  We need to enable physics on the player2
     game.physics.arcade.enable(player1);
@@ -143,6 +143,9 @@ function create() {
     score2Text = game.add.text(600, 16, " " + score2, { fontSize: '32px', fill: '#fff' });
     score2Text.fixedToCamera = true;
 
+    music = game.add.audio('redmusic');
+    music.play('',0,1,true);
+
 }
 
 
@@ -157,8 +160,8 @@ function update() {
     //game.physics.arcade.collide(rim1, ball);
     //game.physics.arcade.collide(rim2, ball);
 
-    game.physics.arcade.overlap(rim1, ball, function() {score1 += 2;});
-    game.physics.arcade.overlap(rim2, ball, function() {score2 += 2;});
+    game.physics.arcade.overlap(rim1, ball, function() {score1 += 2; resetCourt2(50);});
+    game.physics.arcade.overlap(rim2, ball, function() {score2 += 2; resetCourt1(700);});
 
     //  Reset the player1s velocity (movement)
     player1.body.velocity.x = 0;
@@ -169,13 +172,13 @@ function update() {
     if (this.leftKey.isDown)
     {
         //  Move to the left
-        player2.body.velocity.x = -666;
+        player2.body.velocity.x = -400;
         player2.animations.play('left');
     }
     else if (this.rightKey.isDown)
     {
         //  Move to the right
-        player2.body.velocity.x = 666;
+        player2.body.velocity.x = 400;
         player2.animations.play('right');
     }
     else {
@@ -187,13 +190,13 @@ function update() {
     if ((padConnected && navigator.getGamepads()[0].buttons[13].pressed) || cursors.left.isDown)
     {
         //  Move to the left
-        player1.body.velocity.x = -666;
+        player1.body.velocity.x = -400;
         player1.animations.play('left');
     }
     else if ((padConnected && navigator.getGamepads()[0].buttons[14].pressed) || cursors.right.isDown)
     {
         //  Move to the right
-        player1.body.velocity.x = 666;
+        player1.body.velocity.x = 400;
         player1.animations.play('right');
     }
     else
@@ -230,6 +233,20 @@ function update() {
 
     score1Text.text = score1;
     score2Text.text = score2;
+
+    function resetCourt1() {
+      ball.body.position.x = 70;
+      ball.body.position.y = 300;
+      ball.body.velocity.x = 0;
+      ball.body.velocity.y = 0;
+    }
+
+    function resetCourt2() {
+      ball.body.position.x = 700;
+      ball.body.position.y = 300;
+      ball.body.velocity.x = 0;
+      ball.body.velocity.y = 0;
+    }
 
 }
 
