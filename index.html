@@ -24,6 +24,7 @@ function preload() {
     game.load.spritesheet('tc', 'assets/tc.png', 26, 50);
     game.load.spritesheet('kj', 'assets/kj.png', 18, 50);
     game.load.spritesheet('ball', 'assets/ball.png', 32, 32);
+    game.load.image('button', 'assets/start.png');
     game.load.audio('redmusic', ['assets/redcourt.mp3']);
 }
 
@@ -42,6 +43,9 @@ var pad1;
 var rim2;
 var rim2;
 
+var state=0;
+var startButton;
+
 window.addEventListener("gamepadconnected", function(e) {
     console.log("Gamepad connected at index %d: %s. %d buttons, %d axes.",
     e.gamepad.index, e.gamepad.id,
@@ -49,6 +53,9 @@ window.addEventListener("gamepadconnected", function(e) {
 });
 
 function create() {
+
+    
+
     // liteners to handle WASD keys. Each key calls handleKey function
     this.upKey = game.input.keyboard.addKey(Phaser.Keyboard.W);
     this.downKey = game.input.keyboard.addKey(Phaser.Keyboard.S);
@@ -146,10 +153,18 @@ function create() {
     music = game.add.audio('redmusic');
     music.play('',0,1,true);
 
+    title = game.add.text(300, 16, "freak basket menu", { fontSize: '64px', fill: '#fff' });
+    startButton = game.add.button(game.world.centerX - 95,400, 'button', function() {state=1;console.log("start");}, this, 2, 1, 0);
 }
 
 
 function update() {
+
+    function startGame() {
+      state=1;
+      title.text = "";
+      startButton.hide()
+    }
 
     //  Collide the player1 and the stars with the platforms
     game.physics.arcade.collide(player1, base);
