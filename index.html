@@ -204,22 +204,30 @@ function update() {
         player1.frame = 4;
     }
 
-    //  Allow the player1 to jump if they are touching the ground.
-    if ((padConnected && navigator.getGamepads()[0].buttons[0].pressed && player.body.touching.down) || cursors.up.isDown && player1.body.touching.down)
+    //  Allow player1 to jump if they are touching the ground. Allows game pad and arrow keys on keyboard.
+    if ((padConnected && navigator.getGamepads()[0].buttons[11].pressed && player1.body.touching.down) || cursors.up.isDown && player1.body.touching.down)
     {
         player1.body.velocity.y = -375;
     }
 
+    // Allow play2 to jump if they are touching the group
     if (this.upKey.isDown && player2.body.touching.down)
     {
         player2.body.velocity.y = -375;
     }
-    /*
-    if ((padConnected && navigator.getGamepads()[0].buttons[12].pressed )|| (cursors.down.isDown ))
+    
+    // Make player1 fall faster
+    if ((padConnected && navigator.getGamepads()[0].buttons[12].pressed ) || (cursors.down.isDown ))
     {
         player1.body.velocity.y = 425
     }
-    */
+    
+    // Make player2 fall faster
+    if (this.downKey.isDown)
+    {
+        player2.body.velocity.y = 425
+    }
+
     score1Text.text = score1;
     score2Text.text = score2;
 
