@@ -270,13 +270,13 @@ function update() {
     // Make player1 fall faster
     if ((padConnected && navigator.getGamepads()[0].buttons[12].pressed ) || (cursors.down.isDown ))
     {
-        player1.body.velocity.y = 425
+        player1.body.velocity.y = 425;
     }
     
     // Make player2 fall faster
     if (this.downKey.isDown)
     {
-        player2.body.velocity.y = 425
+        player2.body.velocity.y = 1000;
     }
 
     score1Text.text = score1;
