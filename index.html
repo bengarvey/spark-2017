@@ -24,6 +24,7 @@ function preload() {
     game.load.spritesheet('tc', 'assets/tc.png', 26, 50);
     game.load.spritesheet('kj', 'assets/kj.png', 18, 50);
     game.load.spritesheet('ball', 'assets/ball.png', 32, 32);
+    game.load.image('button', 'assets/start.png');
     game.load.audio('redmusic', ['assets/redcourt.mp3']);
 }
 
@@ -41,6 +42,10 @@ var pad1;
 
 var rim2;
 var rim2;
+var clock;
+var lastTime;
+var state=0;
+var startButton;
 
 window.addEventListener("gamepadconnected", function(e) {
     console.log("Gamepad connected at index %d: %s. %d buttons, %d axes.",
@@ -49,6 +54,9 @@ window.addEventListener("gamepadconnected", function(e) {
 });
 
 function create() {
+
+    clock = 30;
+    lastTime = Date.now();
     // liteners to handle WASD keys. Each key calls handleKey function
     this.upKey = game.input.keyboard.addKey(Phaser.Keyboard.W);
     this.downKey = game.input.keyboard.addKey(Phaser.Keyboard.S);
@@ -88,11 +96,11 @@ function create() {
 
     ball = items.create(200, 200, 'ball');
     game.physics.arcade.enable(ball);
-    ball.body.bounce.y = 1;
+    ball.body.bounce.y = 2;
     ball.body.gravity.y = 300;
     ball.body.collideWorldBounds = true;
     ball.body.worldBounce = true;
-    ball.body.bounce.set(1);
+    ball.body.bounce.set(1.1);
     //  Now let's create two ledges
     var ledge = platforms.create(700, 200, 'ground');
     ledge.body.immovable = true;
@@ -111,8 +119,8 @@ function create() {
     rim2.scale.setTo(0.1,0.10);
 
     // The player1 and its settings
-    player1 = game.add.sprite(32, game.world.height - 150,'tc');
-    player2 = game.add.sprite(700, game.world.height - 150, 'kj');
+    player1 = game.add.sprite(700, game.world.height - 150,'tc');
+    player2 = game.add.sprite(32, game.world.height - 150, 'kj');
 
     //  We need to enable physics on the player2
     game.physics.arcade.enable(player1);
@@ -146,10 +154,50 @@ function create() {
     music = game.add.audio('redmusic');
     music.play('',0,1,true);
 
+    title = game.add.text(300, 16, "Freak Basket", { fontSize: '64px', fill: '#fff' });
+    clocktitle = game.add.text(300, 40, clock+'', { fontSize: '64px', fill: '#fff' });
+    //startButton = game.add.button(game.world.centerX - 95,400, 'button', function() {state=1;console.log("start");}, this, 2, 1, 0);
 }
 
 
 function update() {
+
+    function startGame() {
+      clock = 30;
+      state=1;
+      title.text = "Freak Basket";
+      lastTime = Date.now();
+      score1 = 0;
+      score2 = 0;
+    }
+
+    function endGame() {
+      var winner = "";
+      console.log(score2, score1, score1 > score2, score1 < score2);
+      if (score1 > score2) {
+        winner = "Player 1 wins!";
+        alert(winner);
+        startGame();
+      }
+      else if (score1 < score2) {
+        winner = "Player 2 wins!";
+        alert(winner);
+        startGame();
+      }
+    }
+
+    function countdown() {
+      clock -= 1;
+    }
+
+    if (clock <= 0) {
+      endGame();
+    }
+
+    if (Date.now() > lastTime + 1000) {
+      countdown();
+      lastTime = Date.now();
+    }
 
     //  Collide the player1 and the stars with the platforms
     game.physics.arcade.collide(player1, base);
@@ -225,16 +273,17 @@ function update() {
     */
     score1Text.text = score1;
     score2Text.text = score2;
+    clocktitle.text = clock+'';
 
     function resetCourt1() {
-      ball.body.position.x = 70;
+      ball.body.position.x = 350;
       ball.body.position.y = 300;
       ball.body.velocity.x = 0;
       ball.body.velocity.y = 0;
     }
 
     function resetCourt2() {
-      ball.body.position.x = 700;
+      ball.body.position.x = 350;
       ball.body.position.y = 300;
       ball.body.velocity.x = 0;
       ball.body.velocity.y = 0;
