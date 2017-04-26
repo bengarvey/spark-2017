@@ -24,7 +24,6 @@ function preload() {
     game.load.spritesheet('tc', 'assets/tc.png', 26, 50);
     game.load.spritesheet('kj', 'assets/kj.png', 18, 50);
     game.load.spritesheet('ball', 'assets/ball.png', 32, 32);
-    game.load.image('button', 'assets/start.png');
     game.load.audio('redmusic', ['assets/redcourt.mp3']);
 }
 
@@ -270,7 +269,7 @@ function update() {
     // Make player1 fall faster
     if ((padConnected && navigator.getGamepads()[0].buttons[12].pressed ) || (cursors.down.isDown ))
     {
-        player1.body.velocity.y = 425;
+        player1.body.velocity.y = 1000;
     }
     
     // Make player2 fall faster
