@@ -25,6 +25,7 @@ function preload() {
     game.load.spritesheet('kj', 'assets/kj.png', 18, 50);
     game.load.spritesheet('ball', 'assets/ball.png', 32, 32);
     game.load.audio('redmusic', ['assets/redcourt.mp3']);
+    game.load.audio('menu', ['assets/menu.mp3']);
 }
 
 var player1;
@@ -151,7 +152,19 @@ function create() {
     score2Text.fixedToCamera = true;
 
     music = game.add.audio('redmusic');
-    music.play('',0,1,true);
+    music2 = game.add.audio('menu');
+    music.play();
+    setInterval(function(){pickSong();}, 1000*15);
+
+    function pickSong() {
+      var num = Math.round(Math.random() * 2);
+      if (num == 0) {
+        music.play();
+      }
+      else {
+        music2.play();
+      }
+    }
 
     title = game.add.text(300, 16, "Freak Basket", { fontSize: '64px', fill: '#fff' });
     clocktitle = game.add.text(300, 40, clock+'', { fontSize: '64px', fill: '#fff' });
