@@ -26,6 +26,14 @@ function preload() {
     game.load.spritesheet('ball', 'assets/ball.png', 32, 32);
     game.load.audio('redmusic', ['assets/redcourt.mp3']);
     game.load.audio('menu', ['assets/menu.mp3']);
+    game.load.audio('rcbeat', ['assets/rcbeat.mp3']);
+    game.load.audio('level2', ['assets/level2.mp3']);
+
+
+    game.load.audio('startsound', ['assets/startsound.mp3']);
+    game.load.audio('endsound', ['assets/endsound.mp3']);
+    game.load.audio('bucketsound', ['assets/bucketsound.mp3']);
+
 }
 
 var player1;
@@ -46,6 +54,10 @@ var clock;
 var lastTime;
 var state=0;
 var startButton;
+
+var startsound;
+var endsound;
+var bucketsound;
 
 window.addEventListener("gamepadconnected", function(e) {
     console.log("Gamepad connected at index %d: %s. %d buttons, %d axes.",
@@ -153,16 +165,31 @@ function create() {
 
     music = game.add.audio('redmusic');
     music2 = game.add.audio('menu');
-    music.play();
-    setInterval(function(){pickSong();}, 1000*15);
+    music3 = game.add.audio('rcbeat');
+    music4 = game.add.audio('level2');
+
+
+    startsound = game.add.audio('startsound');
+    endsound = game.add.audio('endsound');
+    bucketsound = game.add.audio('bucketsound');
+
+    music3.play();
+    startsound.play();
+    setInterval(function(){pickSong();}, 1000*16);
 
     function pickSong() {
-      var num = Math.round(Math.random() * 2);
+      var num = Math.round(Math.random() * 4);
       if (num == 0) {
         music.play();
       }
-      else {
+      else if (num == 1) {
         music2.play();
+      }
+      else if (num == 2) {
+        music3.play();
+      }
+      else {
+        music4.play();
       }
     }
 
@@ -175,6 +202,7 @@ function create() {
 function update() {
 
     function startGame() {
+      startsound.play();
       clock = 30;
       state=1;
       title.text = "Freak Basket";
@@ -188,11 +216,13 @@ function update() {
       console.log(score2, score1, score1 > score2, score1 < score2);
       if (score1 > score2) {
         winner = "Player 1 wins!";
+        endsound.play();
         alert(winner);
         startGame();
       }
       else if (score1 < score2) {
         winner = "Player 2 wins!";
+        endsound.play();
         alert(winner);
         startGame();
       }
@@ -296,6 +326,7 @@ function update() {
     clocktitle.text = clock+'';
 
     function resetCourt1() {
+      bucketsound.play();
       ball.body.position.x = 350;
       ball.body.position.y = 300;
       ball.body.velocity.x = 0;
@@ -303,6 +334,7 @@ function update() {
     }
 
     function resetCourt2() {
+      bucketsound.play();
       ball.body.position.x = 350;
       ball.body.position.y = 300;
       ball.body.velocity.x = 0;
