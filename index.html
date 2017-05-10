@@ -18,8 +18,10 @@ var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create
 console.log("hey");
 function preload() {
 
-    game.load.image('sky', 'assets/green_court.png');
+    game.load.image('sky', 'assets/background-crowd.png');
     game.load.image('ground', 'assets/platform.png');
+    game.load.image('bbleft', 'assets/backboard_left.png');
+    game.load.image('bbright', 'assets/backboard_right.png');
     game.load.spritesheet('dude', 'assets/bill.png', 32, 48);
     game.load.spritesheet('tc', 'assets/tc.png', 26, 50);
     game.load.spritesheet('kj', 'assets/kj.png', 18, 50);
@@ -47,6 +49,11 @@ var platforms;
 var cursors;
 var ball;
 var pad1;
+
+var bbleft;
+var bbright;
+var bbleft;
+var bbrighti;
 
 var rim2;
 var rim2;
@@ -113,22 +120,23 @@ function create() {
     ball.body.collideWorldBounds = true;
     ball.body.worldBounce = true;
     ball.body.bounce.set(1.1);
-    //  Now let's create two ledges
-    var ledge = platforms.create(700, 200, 'ground');
-    ledge.body.immovable = true;
-    ledge.scale.setTo(0.05,19);
 
-    ledge = platforms.create(50, 200, 'ground');
-    ledge.body.immovable = true;
-    ledge.scale.setTo(0.05,19);
 
-    rim1 = platforms.create(660, 250, 'ground');
+    rim1 = platforms.create(660, 275, 'ground');
     rim1.body.immovable = true;
     rim1.scale.setTo(0.1,0.10);
 
-    rim2 = platforms.create(70, 250, 'ground');
+    rim2 = platforms.create(90, 275, 'ground');
     rim2.body.immovable = true;
     rim2.scale.setTo(0.1,0.10);
+
+    bbleft = platforms.create(0, 200, 'bbleft');
+    bbleft.body.immovable = true;
+    bbleft.scale.setTo(1,1);
+
+    bbright = platforms.create(630, 200, 'bbright');
+    bbright.body.immovable = true;
+    bbright.scale.setTo(1,1);
 
     // The player1 and its settings
     player1 = game.add.sprite(700, game.world.height - 150,'tc');
