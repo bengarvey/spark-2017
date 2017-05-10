@@ -222,17 +222,26 @@ function update() {
     function endGame() {
       var winner = "";
       if (score1 > score2) {
-        winner = "Player 1 wins!";
+        winner = "Player 1 wins!\n";
         endsound.play();
-        alert(winner);
+        alert(winner + getCredits());
         startGame();
       }
       else if (score1 < score2) {
-        winner = "Player 2 wins!";
+        winner = "Player 2 wins!\n";
         endsound.play();
-        alert(winner);
+        alert(winner + getCredits());
         startGame();
       }
+    }
+
+    function getCredits() {
+      return "Freak Basket by\n-----------\n" + 
+        "nathanie adams\n" +
+        "angela whitney\n" +
+        "robert brittingham\n" +
+        "raheem oliver\n" +
+        "carnell hurley\n";
     }
 
     function countdown() {
