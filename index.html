@@ -165,10 +165,10 @@ function create() {
     //  Our controls.
     cursors = game.input.keyboard.createCursorKeys();
 
-    score1Text = game.add.text(16, 16, " " + score1, { fontSize: '32px', fill: '#fff' });
+    score1Text = game.add.text(16, 540, " " + score1 + " awsd", { fontSize: '32px', fill: '#fff' });
     score1Text.fixedToCamera = true;
 
-    score2Text = game.add.text(600, 16, " " + score2, { fontSize: '32px', fill: '#fff' });
+    score2Text = game.add.text(600, 540, " " + score2 + " ←↑→↓", { fontSize: '32px', fill: '#fff' });
     score2Text.fixedToCamera = true;
 
     music = game.add.audio('redmusic');
@@ -201,8 +201,8 @@ function create() {
       }
     }
 
-    title = game.add.text(300, 16, "Freak Basket", { fontSize: '64px', fill: '#fff' });
-    clocktitle = game.add.text(300, 40, clock+'', { fontSize: '64px', fill: '#fff' });
+    title = game.add.text(300, 540, "Freak Basket", { fontSize: '64px', fill: '#fff' });
+    clocktitle = game.add.text(300, 570, clock+'', { fontSize: '64px', fill: '#fff' });
     //startButton = game.add.button(game.world.centerX - 95,400, 'button', function() {state=1;console.log("start");}, this, 2, 1, 0);
 }
 
@@ -221,7 +221,6 @@ function update() {
 
     function endGame() {
       var winner = "";
-      console.log(score2, score1, score1 > score2, score1 < score2);
       if (score1 > score2) {
         winner = "Player 1 wins!";
         endsound.play();
@@ -329,8 +328,8 @@ function update() {
         player2.body.velocity.y = 1000;
     }
 
-    score1Text.text = score1;
-    score2Text.text = score2;
+    score1Text.text = score1 + " awsd";
+    score2Text.text = score2 + " ←↑→↓";
     clocktitle.text = clock+'';
 
     function resetCourt1() {
